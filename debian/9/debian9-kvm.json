@@ -1,0 +1,46 @@
+{
+  "builders":
+  [
+    {
+      "type": "qemu",
+      "iso_url": "http://cdimage.debian.org/pub/debian-cd/current/amd64/iso-cd/debian-9.1.0-amd64-netinst.iso",
+      "iso_checksum": "ddd8f6542dae8baf410e90b9ae0fe986",
+      "iso_checksum_type": "md5",
+      "output_directory": "debian9-kvm",
+      "shutdown_command": "shutdown -P now",
+      "disk_size": 5000,
+      "format": "qcow2",
+      "headless": false,
+      "accelerator": "kvm",
+      "http_directory": "http",
+      "http_port_min": 10082,
+      "http_port_max": 10089,
+      "ssh_host_port_min": 2222,
+      "ssh_host_port_max": 2229,
+      "ssh_username": "root",
+      "ssh_password": "root",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "5000s",
+      "vm_name": "debian9-template",
+      "net_device": "virtio-net",
+      "disk_interface": "virtio",
+      "boot_wait": "5s",
+      "boot_command": [
+        "<esc><wait>",
+        "install <wait>",
+        "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed_stretch.cfg <wait>",
+        "debian-installer=en_US <wait>",
+        "auto <wait>",
+        "kbd-chooser/method=us <wait>",
+        "keyboard-configuration/xkb-keymap=fr <wait>",
+        "netcfg/get_hostname={{ .Name }} <wait>",
+        "netcfg/get_domain=b0rk.in <wait>",
+        "fb=false <wait>",
+        "debconf/frontend=noninteractive <wait>",
+        "console-setup/ask_detect=false <wait>",
+        "console-keymaps-at/keymap=fr <wait>",
+        "<enter><wait>"
+      ]
+    }
+  ]
+}
