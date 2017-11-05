@@ -3,9 +3,9 @@
   [
     {
       "type": "qemu",
-      "iso_url": "http://cdimage.debian.org/pub/debian-cd/current/amd64/iso-cd/debian-9.1.0-amd64-netinst.iso",
+      "iso_url": "http://cdimage.debian.org/pub/debian-cd/current/amd64/iso-cd/debian-9.2.1-amd64-netinst.iso",
       "iso_checksum": "ddd8f6542dae8baf410e90b9ae0fe986",
-      "iso_checksum_type": "md5",
+      "iso_checksum_type": "none",
       "output_directory": "debian9-kvm",
       "shutdown_command": "shutdown -P now",
       "disk_size": 5000,
@@ -20,7 +20,7 @@
       "ssh_username": "root",
       "ssh_password": "root",
       "ssh_port": 22,
-      "ssh_wait_timeout": "5000s",
+      "ssh_wait_timeout": "10000s",
       "vm_name": "debian9-template",
       "net_device": "virtio-net",
       "disk_interface": "virtio",
@@ -28,8 +28,9 @@
       "boot_command": [
         "<esc><wait>",
         "install <wait>",
-        "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed_stretch.cfg <wait>",
+        "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg <wait>",
         "debian-installer=en_US <wait>",
+        "locale=en_US <wait>",
         "auto <wait>",
         "kbd-chooser/method=us <wait>",
         "keyboard-configuration/xkb-keymap=fr <wait>",
