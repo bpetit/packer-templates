@@ -1,0 +1,9 @@
+- hosts: all
+  tasks:
+    - template:
+        src: templates/etc/default/grub.j2
+        dest: /etc/default/grub
+    - shell: update-grub
+    - service:
+        name: serial-getty@ttyS0
+        state: started

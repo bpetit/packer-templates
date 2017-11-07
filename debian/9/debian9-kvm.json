@@ -6,7 +6,7 @@
       "iso_url": "http://cdimage.debian.org/pub/debian-cd/current/amd64/iso-cd/debian-9.2.1-amd64-netinst.iso",
       "iso_checksum": "ddd8f6542dae8baf410e90b9ae0fe986",
       "iso_checksum_type": "none",
-      "output_directory": "debian9-kvm",
+      "output_directory": "template-debian-9",
       "shutdown_command": "shutdown -P now",
       "disk_size": 5000,
       "format": "qcow2",
@@ -21,7 +21,7 @@
       "ssh_password": "root",
       "ssh_port": 22,
       "ssh_wait_timeout": "10000s",
-      "vm_name": "debian9-template",
+      "vm_name": "template-debian-9",
       "net_device": "virtio-net",
       "disk_interface": "virtio",
       "boot_wait": "5s",
@@ -43,5 +43,17 @@
         "<enter><wait>"
       ]
     }
-  ]
+  ],
+	"provisioners": [
+		{
+			"type": "ansible",
+      "playbook_file": "./ansible/playbook.yml"
+		}
+	],
+	"post-processors": [
+		{
+			"type": "compress",
+			"output": "template-debian-9.qcow2.tar.gz"
+		}
+	]
 }
