@@ -1,0 +1,64 @@
+{
+  "builders":
+  [
+    {
+      "type": "qemu",
+      "iso_url": "http://cdimage.debian.org/pub/debian-cd/current/amd64/iso-cd/debian-10.6.0-amd64-netinst.iso",
+      "iso_checksum": "a93827ab9971c99e6c077ebaa86daf50aed36777",
+      "iso_checksum_type": "none",
+      "iso_skip_cache": false,
+      "iso_target_path": "debian10.iso",
+      "output_directory": "template-debian-10",
+      "shutdown_command": "shutdown -P now",
+      "disk_size": 5000,
+      "format": "qcow2",
+      "headless": false,
+      "accelerator": "kvm",
+      "http_directory": "http",
+      "http_port_min": 10082,
+      "http_port_max": 10089,
+      "ssh_host_port_min": 2222,
+      "ssh_host_port_max": 2229,
+      "ssh_username": "root",
+      "ssh_password": "root",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "10000s",
+      "vm_name": "template-debian-10",
+      "net_device": "virtio-net",
+      "disk_interface": "virtio",
+      "boot_wait": "5s",
+      "qemuargs": [
+        ["-display", "gtk"]
+      ],
+      "boot_command": [
+        "<esc><wait>",
+        "install <wait>",
+        "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg <wait>",
+        "debian-installer=en_US <wait>",
+        "locale=en_US <wait>",
+        "auto <wait>",
+        "kbd-chooser/method=us <wait>",
+        "keyboard-configuration/xkb-keymap=fr <wait>",
+        "netcfg/get_hostname={{ .Name }} <wait>",
+        "netcfg/get_domain=b0rk.in <wait>",
+        "fb=false <wait>",
+        "debconf/frontend=noninteractive <wait>",
+        "console-setup/ask_detect=false <wait>",
+        "console-keymaps-at/keymap=fr <wait>",
+        "<enter><wait>"
+      ]
+    }
+  ],
+	"provisioners": [
+		{
+			"type": "ansible",
+      "playbook_file": "./ansible/playbook.yml"
+		}
+	],
+	"post-processors": [
+		{
+			"type": "compress",
+			"output": "template-debian-10.qcow2.tar.gz"
+		}
+	]
+}
